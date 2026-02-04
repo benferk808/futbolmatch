@@ -309,17 +309,28 @@ ORGANIZADOR                          SUPABASE                         JUGADOR
 
 ---
 
-## ✅ CHECKLIST PRÓXIMA SESIÓN
+## ✅ CHECKLIST DEPLOYMENT
 
-- [ ] Crear cuenta GitHub personal (NO empresa)
-- [ ] Crear cuenta Vercel personal (NO empresa)
-- [ ] Crear cuenta Supabase personal (NO empresa)
-- [ ] Subir código a GitHub
-- [ ] Crear proyecto en Supabase
-- [ ] Ejecutar SQL para crear tablas
-- [ ] Crear servicio supabaseApiService.ts
-- [ ] Configurar variables de entorno
-- [ ] Deploy en Vercel
+### Completado (código listo):
+- [x] Crear servicio `services/supabaseApiService.ts`
+- [x] Crear wrapper `services/api.ts` (selecciona mock o Supabase automáticamente)
+- [x] Crear `lib/supabase.ts` (cliente de Supabase)
+- [x] Crear `.env.example` (template)
+- [x] Inicializar repositorio git
+- [x] Crear commit inicial
+
+### Pendiente (requiere acción manual):
+- [ ] **Crear cuenta GitHub personal** (NO empresa) → https://github.com/signup
+- [ ] **Crear cuenta Vercel personal** (NO empresa) → https://vercel.com/signup
+- [ ] **Crear cuenta Supabase personal** (NO empresa) → https://supabase.com
+
+### Una vez creadas las cuentas:
+- [ ] Crear repositorio en GitHub y hacer push
+- [ ] Crear proyecto en Supabase (región: São Paulo)
+- [ ] Ejecutar SQL para crear tablas (ver sección 3.2)
+- [ ] Crear `.env.local` con credenciales de Supabase
+- [ ] Conectar Vercel con GitHub y deploy
+- [ ] Configurar variables de entorno en Vercel
 - [ ] Probar flujo completo con link público
 - [ ] Compartir con grupo de WhatsApp real
 

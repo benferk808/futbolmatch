@@ -52,8 +52,9 @@ Equipo de fútbol 8 amateur, Liga Solymar Verano 2026, Uruguay.
 ## 📍 DÓNDE ESTAMOS
 
 **Versión:** 1.3.0
-**Estado:** ⚠️ Implementado pero NO testeado completamente
-**Servidor:** http://localhost:3000/ (debería estar corriendo)
+**Estado:** LISTO PARA DEPLOYMENT
+**Git:** Inicializado con commit inicial
+**Servidor local:** `npm run dev` → http://localhost:3000/
 
 ---
 
