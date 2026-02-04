@@ -18,6 +18,28 @@ const MatchCreatedModal: React.FC<MatchCreatedModalProps> = ({ match, onClose })
   const playerLink = `${baseUrl}/#/match/${match.id}`;
   const organizerLink = `${baseUrl}/#/match/${match.id}?admin=${match.organizerId}`;
 
+  // Build the full WhatsApp message
+  const getWhatsAppMessage = () => {
+    const mapsLinkSection = match.locationURL
+      ? t('whatsAppMapsLinkSection', { mapsLink: match.locationURL })
+      : '';
+
+    const locationSection = match.location
+      ? t('whatsAppLocationSection', {
+          location: match.location,
+          mapsLinkSection: mapsLinkSection
+        })
+      : '';
+
+    return t('whatsAppShareMessage', {
+      fieldName: match.fieldName,
+      date: match.date,
+      time: match.time,
+      locationSection: locationSection,
+      link: playerLink,
+    });
+  };
+
   const copyToClipboard = async (text: string, isOrganizer: boolean) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -35,27 +57,7 @@ const MatchCreatedModal: React.FC<MatchCreatedModalProps> = ({ match, onClose })
   };
 
   const shareOnWhatsApp = () => {
-    // Build maps link section if URL exists
-    const mapsLinkSection = match.locationURL
-      ? t('whatsAppMapsLinkSection', { mapsLink: match.locationURL })
-      : '';
-
-    // Build location section if location exists
-    const locationSection = match.location
-      ? t('whatsAppLocationSection', {
-          location: match.location,
-          mapsLinkSection: mapsLinkSection
-        })
-      : '';
-
-    const text = t('whatsAppShareMessage', {
-      fieldName: match.fieldName,
-      date: match.date,
-      time: match.time,
-      locationSection: locationSection,
-      link: playerLink,
-    });
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(getWhatsAppMessage())}`;
     window.open(whatsappUrl, '_blank');
   };
 
@@ -115,7 +117,7 @@ const MatchCreatedModal: React.FC<MatchCreatedModalProps> = ({ match, onClose })
             className="flex-1 bg-gray-800 border-gray-600 rounded px-3 py-2 text-sm text-gray-300"
           />
           <button
-            onClick={() => copyToClipboard(playerLink, false)}
+            onClick={() => copyToClipboard(getWhatsAppMessage(), false)}
             className={`px-4 py-2 rounded font-semibold transition-colors ${
               copiedPlayer ? 'bg-green-600' : 'bg-gray-600 hover:bg-gray-500'
             }`}
@@ -123,6 +125,7 @@ const MatchCreatedModal: React.FC<MatchCreatedModalProps> = ({ match, onClose })
             {copiedPlayer ? 'Copiado!' : 'Copiar'}
           </button>
         </div>
+        <p className="text-xs text-green-400 mt-2 opacity-75">* Al copiar se incluye el mensaje completo formateado</p>
       </div>
 
       {/* Botones */}
