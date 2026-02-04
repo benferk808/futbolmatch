@@ -289,13 +289,16 @@ const MatchView: React.FC<MatchViewProps> = ({ initialMatch, onMatchUpdate }) =>
       ? `${match.location}\n${match.locationURL}`
       : match.location;
 
+    // Construir link correcto con hash
+    const matchLink = `${window.location.origin}/#/match/${match.id}`;
+
     const text = t('whatsAppShareMessage', {
       fieldName: match.fieldName,
       date: match.date,
       time: match.time,
       location: locationText,
       organizer: match.organizerName || 'Organizador',
-      link: window.location.href,
+      link: matchLink,
     });
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
     window.open(whatsappUrl, '_blank');
