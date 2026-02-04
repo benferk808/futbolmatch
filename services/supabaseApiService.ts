@@ -63,13 +63,18 @@ export async function createMatch(data: CreateMatchPayload): Promise<{ id: strin
   if (data.teamColor) insertData.team_color = data.teamColor;
   if (data.teamColorSecondary) insertData.team_color_secondary = data.teamColorSecondary;
 
+  console.log('[createMatch] Inserting data:', JSON.stringify(insertData, null, 2));
+
   const { data: match, error } = await supabase
     .from('matches')
     .insert(insertData)
     .select('id')
     .single();
 
-  if (error) throw error;
+  if (error) {
+    console.error('[createMatch] Supabase error:', error);
+    throw error;
+  }
 
   // Guardar organizerId en sessionStorage
   sessionStorage.setItem(`organizer_${match.id}`, organizerId);
