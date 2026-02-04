@@ -1,20 +1,48 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# FutbolMatch
 
-# Run and deploy your AI Studio app
+App para organizar partidos de futbol amateur. Crea un partido, comparte el link por WhatsApp, y los jugadores se anotan solos.
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/1nBPuRLyBOGkVPIHj9uTMwWOAu9AAF_G2
+- Crear partidos con diferentes formaciones (5, 7, 8, 11 jugadores)
+- Modo Libre (todos editan) o Modo Tecnico (solo el organizador)
+- Colores de equipo personalizables
+- Drag & drop de jugadores a posiciones
+- Lista de jugadores pendientes (banco)
+- Descargar imagen de la formacion
+- Compartir por WhatsApp
+- Multiidioma (ES/EN)
+
+## Tech Stack
+
+- **Frontend:** React + TypeScript + Vite
+- **Backend:** Supabase (PostgreSQL + Realtime)
+- **Deploy:** Vercel
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
+```bash
+npm install
+npm run dev
+```
 
+Abre http://localhost:3000
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Environment Variables
+
+Copia `.env.example` a `.env.local` y configura:
+
+```
+VITE_SUPABASE_URL=https://tu-proyecto.supabase.co
+VITE_SUPABASE_ANON_KEY=tu-anon-key
+```
+
+Sin estas variables, la app usa un mock local (localStorage).
+
+## Deploy
+
+Ver `DEPLOYMENT-PLAN.md` para instrucciones completas.
+
+## License
+
+MIT

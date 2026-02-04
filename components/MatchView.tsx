@@ -30,27 +30,10 @@ const MatchView: React.FC<MatchViewProps> = ({ initialMatch, onMatchUpdate }) =>
   useEffect(() => {
     const checkOrganizer = async () => {
       const { isOrganizer } = await import('../services/api');
-      const isOrg = isOrganizer(match.id, match);
-      console.log('🔍 Checking organizer:', {
-        matchId: match.id,
-        matchOrganizerId: match.organizerId,
-        storedOrganizerId: sessionStorage.getItem(`organizer_${match.id}`),
-        isOrganizer: isOrg
-      });
-      setIsUserOrganizer(isOrg);
+      setIsUserOrganizer(isOrganizer(match.id, match));
     };
     checkOrganizer();
   }, [match.id, match]);
-
-  // Simulate polling for updates
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // In a real app, this would be a fetch call.
-      // Here we just log to show it's working.
-      console.log("Polling for match updates...");
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [match.id]);
 
   // Determinar si el usuario puede editar posiciones
   const canEditPositions = useMemo(() => {
