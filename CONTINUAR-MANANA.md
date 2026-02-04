@@ -1,7 +1,8 @@
 # CONTINUAR MAÑANA - Deployment FutbolMatch
 
-> **Fecha:** 3 Febrero 2026
+> **Fecha:** 4 Febrero 2026
 > **Cuentas creadas:** GitHub, Vercel, Supabase (todas con fnosieski@hotmail.com)
+> **Codigo:** LIMPIO - Solo Supabase, sin Cloudflare
 
 ---
 
@@ -20,9 +21,18 @@
 ## ESTADO DEL CÓDIGO
 
 - Git inicializado en `C:\Users\Usuario\Futbolmatch`
-- 2 commits realizados
-- Todos los archivos listos para Supabase
+- **4 commits** realizados
+- Codigo **LIMPIO** - eliminado todo lo de Cloudflare
 - El código detecta automáticamente si usar mock o Supabase
+
+### Limpieza realizada (3 Feb):
+- Eliminado `backend/` (Cloudflare Workers)
+- Eliminado `wrangler.toml`
+- Eliminado `database/schema.sql` (D1)
+- Eliminado `services/apiService.ts`
+- Eliminada documentacion obsoleta
+- Eliminados console.log de debug
+- **2233 lineas de codigo innecesario removidas**
 
 ---
 
