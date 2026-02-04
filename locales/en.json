@@ -62,5 +62,7 @@
   "optional": "optional",
   "creatingMatch": "Creating match...",
   "matchCreated": "Match created successfully!",
+  "noPermissionToEdit": "Only the organizer can modify positions in coach mode",
+  "useJoinButton": "Use the 'Join Match' button to sign up",
   "footerText": "FUTBOLMATCH © 2024"
 }

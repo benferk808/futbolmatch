@@ -143,10 +143,9 @@ export async function addPlayer(matchId: string, data: AddPlayerPayload): Promis
       .from('players')
       .select('id')
       .eq('match_id', matchId)
-      .eq('position_index', data.positionIndex)
-      .single();
+      .eq('position_index', data.positionIndex);
 
-    if (existing) throw new Error('Position already occupied');
+    if (existing && existing.length > 0) throw new Error('Position already occupied');
   }
 
   const { data: player, error } = await supabase
@@ -282,10 +281,9 @@ export async function assignPlayerPosition(matchId: string, playerId: string, po
     .select('id')
     .eq('match_id', matchId)
     .eq('position_index', positionIndex)
-    .neq('id', playerId)
-    .single();
+    .neq('id', playerId);
 
-  if (existing) throw new Error('Position already occupied');
+  if (existing && existing.length > 0) throw new Error('Position already occupied');
 
   const { error } = await supabase
     .from('players')

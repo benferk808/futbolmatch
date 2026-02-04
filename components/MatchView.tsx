@@ -70,6 +70,11 @@ const MatchView: React.FC<MatchViewProps> = ({ initialMatch, onMatchUpdate }) =>
   
   const handleSlotClick = async (positionIndex: number, isOccupied: boolean) => {
     if (isOccupied) {
+      // Solo el organizador puede quitar jugadores en modo técnico
+      if (!canEditPositions) {
+        toast.error(t('noPermissionToEdit') || 'Solo el organizador puede modificar posiciones');
+        return;
+      }
       const player = match.players.find(p => p.positionIndex === positionIndex);
       if (player && window.confirm(t('removePlayerConfirm', { name: player.name }))) {
         try {
@@ -86,6 +91,12 @@ const MatchView: React.FC<MatchViewProps> = ({ initialMatch, onMatchUpdate }) =>
         }
       }
     } else {
+      // En modo técnico, solo el organizador puede asignar posiciones directamente
+      // Los jugadores deben usar el botón "Unirse" que los pone en lista de espera
+      if (!canEditPositions) {
+        toast.info(t('useJoinButton') || 'Usa el botón "Unirse al partido" para anotarte');
+        return;
+      }
       setSelectedPosition(positionIndex);
       setJoinModalOpen(true);
     }

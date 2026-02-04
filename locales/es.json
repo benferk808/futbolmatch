@@ -62,5 +62,7 @@
   "optional": "opcional",
   "creatingMatch": "Creando partido...",
   "matchCreated": "¡Partido creado exitosamente!",
+  "noPermissionToEdit": "Solo el organizador puede modificar posiciones en modo técnico",
+  "useJoinButton": "Usa el botón 'Unirse al partido' para anotarte",
   "footerText": "FUTBOLMATCH © 2024"
 }
