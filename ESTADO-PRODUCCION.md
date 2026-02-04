@@ -1,7 +1,7 @@
 # ESTADO DE PRODUCCION - FutbolMatch
 
 > **Fecha:** 4 Febrero 2026
-> **Version:** 1.4.0 (en produccion)
+> **Version:** 1.5.0 (en produccion)
 > **URL:** https://futbolmatch.vercel.app/
 
 ---
@@ -84,9 +84,11 @@ Jugador                    |                        |
 | Agregar/quitar slots | Todos | Solo organizador |
 
 ### Compartir
-- Boton "Compartir por WhatsApp" genera mensaje con link
-- Link formato: `https://futbolmatch.vercel.app/#/match/UUID`
-- Al abrir el link, carga el partido automaticamente
+- Al crear partido, aparece modal con DOS links:
+  - **Link Organizador:** `#/match/UUID?admin=TOKEN` (privado, guardar)
+  - **Link Jugadores:** `#/match/UUID` (compartir en WhatsApp)
+- Boton "Compartir por WhatsApp" genera mensaje solo con link de jugadores
+- El organizador puede recuperar su rol abriendo su link privado
 
 ### Vista de Jugadores
 - Jugadores en cancha (con posicion asignada)
@@ -208,8 +210,7 @@ Mismo contenido que Vercel.
 ## PROBLEMAS CONOCIDOS (no criticos)
 
 1. **Warning Tailwind CDN** - Aparece en consola, no afecta funcionamiento
-2. **sessionStorage para organizador** - Si cierra la pestana, pierde el rol de organizador
-3. **Sin autenticacion real** - Cualquiera con el link puede unirse
+2. **Sin autenticacion real** - Cualquiera con el link puede unirse (por diseno, para facilitar acceso)
 
 ---
 

@@ -46,8 +46,9 @@ App web para organizar partidos de futbol amateur:
 | Archivo | Descripcion |
 |---------|-------------|
 | `ESTADO-PRODUCCION.md` | Documentacion completa del estado actual |
-| `App.tsx` | Router principal (hash-based) |
+| `App.tsx` | Router principal (hash-based + admin auth) |
 | `components/MatchView.tsx` | Vista principal del partido |
+| `components/MatchCreatedModal.tsx` | Modal con links organizador/jugador |
 | `services/api.ts` | Wrapper API (mock o supabase) |
 | `services/supabaseApiService.ts` | Conexion real a Supabase |
 
@@ -78,17 +79,25 @@ El `App.tsx` lee el hash y carga el partido correspondiente.
 
 ## COMO SABE QUIEN ES ORGANIZADOR
 
-Cuando se crea un partido:
-1. Se genera `organizerId` unico
-2. Se guarda en `sessionStorage` del navegador
-3. Se guarda en la tabla `matches` de Supabase
+### Sistema de Dos Links
 
-Cuando alguien abre el partido:
-1. Se compara `sessionStorage.organizer_{matchId}` con `match.organizerId`
-2. Si coinciden → es organizador
-3. Si no → es jugador
+Cuando se crea un partido, se generan DOS links:
 
-**Limitacion:** Si cierra la pestana, pierde el sessionStorage y el rol.
+1. **Link de Jugadores:** `https://futbolmatch.vercel.app/#/match/UUID`
+   - Para compartir en WhatsApp
+   - Solo permite unirse al partido
+
+2. **Link de Organizador:** `https://futbolmatch.vercel.app/#/match/UUID?admin=TOKEN`
+   - PRIVADO - no compartir
+   - El parametro `?admin=TOKEN` identifica al organizador
+   - El TOKEN coincide con `match.organizerId` en la BD
+
+### Flujo de autenticacion:
+1. Al crear partido, se muestra modal con ambos links
+2. Organizador guarda su link privado
+3. Cuando abre con `?admin=TOKEN`, la app valida el token
+4. Si es valido, guarda en `sessionStorage` para la sesion
+5. Si cierra el navegador, puede volver a abrir con su link
 
 ---
 
