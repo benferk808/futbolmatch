@@ -6,10 +6,6 @@
 import { supabase } from '../lib/supabase';
 import type { Match, Player, MatchMode } from '../types';
 
-// Credenciales para fetch directo (workaround)
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL?.trim();
-const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim();
-
 interface CreateMatchPayload {
   type: number;
   tactic: string;
@@ -41,11 +37,11 @@ const generateId = () => Math.random().toString(36).substring(2, 15) + Math.rand
  * Crear un nuevo partido
  */
 export async function createMatch(data: CreateMatchPayload): Promise<{ id: string; organizerId: string }> {
-  if (!SUPABASE_URL || !SUPABASE_KEY) throw new Error('Supabase not configured');
+  if (!supabase) throw new Error('Supabase not configured');
 
   const organizerId = generateId();
 
-  // Construir objeto sin valores undefined
+  // Construir objeto sin valores undefined (Supabase no los acepta)
   const insertData: Record<string, unknown> = {
     type: data.type,
     tactic: data.tactic,
@@ -67,27 +63,13 @@ export async function createMatch(data: CreateMatchPayload): Promise<{ id: strin
   if (data.teamColor) insertData.team_color = data.teamColor;
   if (data.teamColorSecondary) insertData.team_color_secondary = data.teamColorSecondary;
 
-  console.log('[createMatch] Inserting data:', JSON.stringify(insertData, null, 2));
+  const { data: match, error } = await supabase
+    .from('matches')
+    .insert(insertData)
+    .select('id')
+    .single();
 
-  // Usar fetch directo en lugar del cliente Supabase (workaround)
-  const response = await fetch(`${SUPABASE_URL}/rest/v1/matches?select=id`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-      'Prefer': 'return=representation'
-    },
-    body: JSON.stringify(insertData)
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error('[createMatch] API error:', errorData);
-    throw new Error(errorData.message || 'Failed to create match');
-  }
-
-  const [match] = await response.json();
+  if (error) throw error;
 
   // Guardar organizerId en sessionStorage
   sessionStorage.setItem(`organizer_${match.id}`, organizerId);
