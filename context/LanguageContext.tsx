@@ -55,7 +55,9 @@ const en = {
   "extraSlotRemoved": "Extra player slot removed.",
   "tacticChanged": "Tactic changed to {tactic}.",
   "playersBenched": "{count} player(s) moved to bench as their position was removed.",
-  "whatsAppShareMessage": "⚽ Join our FUTBOLMATCH! ⚽\n\n*Field:* {fieldName}\n*Date:* {date} at {time}\n*Location:* {location}\n\n👤 *Organizer:* {organizer}\n\nJoin here: {link}",
+  "whatsAppShareMessage": "⚽ *Welcome to FUTBOLMATCH!* ⚽\n\n📋 *Join the player list:*\n{link}\n\n📅 *Date:* {date}\n⏰ *Time:* {time}\n🏟️ *Field:* {fieldName}{locationSection}",
+  "whatsAppLocationSection": "\n\n📍 *Location:*\n{location}{mapsLinkSection}",
+  "whatsAppMapsLinkSection": "\n🗺️ *View on Google Maps:*\n{mapsLink}",
   "positionMoved": "Position moved",
   "joinMatchTitle": "Join Match",
   "joinMatchSubtitle": "Enter your name to claim this position.",
@@ -91,7 +93,16 @@ const en = {
   "joinMatch": "Join Match",
   "playerJoinedPending": "{name} joined! Waiting for position assignment",
   "playerAssignedToPosition": "{name} assigned to position",
-  "playerMovedToBench": "{name} moved to bench"
+  "playerMovedToBench": "{name} moved to bench",
+  "matchCreatedTitle": "Match Created!",
+  "matchCreatedSubtitle": "Save these important links:",
+  "organizerLinkTitle": "ORGANIZER Link",
+  "organizerLinkDescription": "SAVE IT! This lets you edit the match. Don't share it.",
+  "playerLinkTitle": "Link for PLAYERS",
+  "playerLinkDescription": "Share this link in the WhatsApp group",
+  "linkCopied": "Link copied!",
+  "sharePlayersLink": "Share on WhatsApp",
+  "understood": "Got it, continue"
 };
 
 const es = {
@@ -148,7 +159,9 @@ const es = {
   "extraSlotRemoved": "Espacio de jugador extra eliminado.",
   "tacticChanged": "Táctica cambiada a {tactic}.",
   "playersBenched": "{count} jugador(es) movido(s) a la banca porque su posición fue eliminada.",
-  "whatsAppShareMessage": "⚽ ¡Únete a nuestro FUTBOLMATCH! ⚽\n\n*Cancha:* {fieldName}\n*Fecha:* {date} a las {time}\n*Ubicación:* {location}\n\n👤 *Organiza:* {organizer}\n\nÚnete aquí: {link}",
+  "whatsAppShareMessage": "⚽ *¡Bienvenido a FUTBOLMATCH!* ⚽\n\n📋 *Sumate a la lista de jugadores:*\n{link}\n\n📅 *Fecha:* {date}\n⏰ *Hora:* {time}\n🏟️ *Cancha:* {fieldName}{locationSection}",
+  "whatsAppLocationSection": "\n\n📍 *Ubicación:*\n{location}{mapsLinkSection}",
+  "whatsAppMapsLinkSection": "\n🗺️ *Ver en Google Maps:*\n{mapsLink}",
   "positionMoved": "Posición movida",
   "joinMatchTitle": "Unirse al Partido",
   "joinMatchSubtitle": "Ingresa tu nombre para ocupar esta posición.",
@@ -184,7 +197,16 @@ const es = {
   "joinMatch": "Unirse al Partido",
   "playerJoinedPending": "¡{name} se unió! Esperando asignación de posición",
   "playerAssignedToPosition": "{name} asignado a posición",
-  "playerMovedToBench": "{name} movido al banco"
+  "playerMovedToBench": "{name} movido al banco",
+  "matchCreatedTitle": "¡Partido Creado!",
+  "matchCreatedSubtitle": "Guarda estos links importantes:",
+  "organizerLinkTitle": "Link de ORGANIZADOR",
+  "organizerLinkDescription": "¡GUARDALO! Te permite editar el partido. No lo compartas.",
+  "playerLinkTitle": "Link para JUGADORES",
+  "playerLinkDescription": "Comparte este link en el grupo de WhatsApp",
+  "linkCopied": "¡Link copiado!",
+  "sharePlayersLink": "Compartir en WhatsApp",
+  "understood": "Entendido, continuar"
 };
 
 
@@ -209,14 +231,14 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const [language, setLanguage] = useState<Language>('es'); // Default to Spanish
 
   const t = useCallback((key: TranslationKey, vars?: Record<string, string | number>): string => {
-    let text = translations[language][key] || translations['es'][key]; // Fallback to Spanish
-    if (vars) {
+    let text = translations[language][key] || translations['es'][key] || key; // Fallback to Spanish, then to key
+    if (vars && text) {
       Object.keys(vars).forEach(varKey => {
         const regex = new RegExp(`{${varKey}}`, 'g');
-        text = text.replace(regex, String(vars[varKey]));
+        text = text.replace(regex, String(vars[varKey] ?? ''));
       });
     }
-    return text;
+    return text || '';
   }, [language]);
 
   const value = useMemo(() => ({
