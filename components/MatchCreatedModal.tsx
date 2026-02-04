@@ -35,17 +35,25 @@ const MatchCreatedModal: React.FC<MatchCreatedModalProps> = ({ match, onClose })
   };
 
   const shareOnWhatsApp = () => {
-    const locationText = match.locationURL
-      ? `${match.location}\n${match.locationURL}`
-      : match.location;
+    // Build maps link section if URL exists
+    const mapsLinkSection = match.locationURL
+      ? t('whatsAppMapsLinkSection', { mapsLink: match.locationURL })
+      : '';
+
+    // Build location section if location exists
+    const locationSection = match.location
+      ? t('whatsAppLocationSection', {
+          location: match.location,
+          mapsLinkSection: mapsLinkSection
+        })
+      : '';
 
     const text = t('whatsAppShareMessage', {
       fieldName: match.fieldName,
       date: match.date,
       time: match.time,
-      location: locationText,
-      organizer: match.organizerName || 'Organizador',
-      link: playerLink, // Solo el link de jugador!
+      locationSection: locationSection,
+      link: playerLink,
     });
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
     window.open(whatsappUrl, '_blank');

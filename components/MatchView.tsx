@@ -296,19 +296,27 @@ const MatchView: React.FC<MatchViewProps> = ({ initialMatch, onMatchUpdate }) =>
   };
 
   const handleShare = () => {
-    const locationText = match.locationURL
-      ? `${match.location}\n${match.locationURL}`
-      : match.location;
-
-    // Construir link correcto con hash
+    // Construir link correcto con hash (solo para jugadores)
     const matchLink = `${window.location.origin}/#/match/${match.id}`;
+
+    // Build maps link section if URL exists
+    const mapsLinkSection = match.locationURL
+      ? t('whatsAppMapsLinkSection', { mapsLink: match.locationURL })
+      : '';
+
+    // Build location section if location exists
+    const locationSection = match.location
+      ? t('whatsAppLocationSection', {
+          location: match.location,
+          mapsLinkSection: mapsLinkSection
+        })
+      : '';
 
     const text = t('whatsAppShareMessage', {
       fieldName: match.fieldName,
       date: match.date,
       time: match.time,
-      location: locationText,
-      organizer: match.organizerName || 'Organizador',
+      locationSection: locationSection,
       link: matchLink,
     });
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
