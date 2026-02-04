@@ -1,14 +1,14 @@
 # ESTADO DE PRODUCCION - FutbolMatch
 
 > **Fecha:** 4 Febrero 2026
-> **Version:** 1.5.0 (en produccion)
+> **Version:** 1.6.0 (en produccion)
 > **URL:** https://futbolmatch.vercel.app/
 
 ---
 
 ## RESUMEN EJECUTIVO
 
-FutbolMatch es una app para organizar partidos de futbol amateur. El organizador crea un partido, comparte el link por WhatsApp, y los jugadores se anotan solos.
+FutbolMatch es una app para organizar partidos de futbol amateur. El organizador crea un partido, guarda su link privado, comparte el link de jugadores por WhatsApp, y los jugadores se anotan solos.
 
 **ESTA EN PRODUCCION Y FUNCIONANDO.**
 
@@ -33,10 +33,11 @@ Usuario                App (Vercel)              Supabase
   |                        |                        |
   |-- Crear partido ------>|                        |
   |                        |-- INSERT match ------->|
-  |                        |<-- match.id -----------|
-  |<-- URL con #/match/id -|                        |
+  |                        |<-- match.id + orgId ---|
+  |<-- Modal 2 links ------|                        |
   |                        |                        |
-  |-- Compartir link ----->| (WhatsApp)             |
+  |-- Guardar link org --->| (privado)              |
+  |-- Compartir link jug ->| (WhatsApp)             |
   |                        |                        |
 Jugador                    |                        |
   |-- Abrir link --------->|                        |
@@ -46,7 +47,6 @@ Jugador                    |                        |
   |                        |                        |
   |-- Unirse ------------->|                        |
   |                        |-- INSERT player ------>|
-  |                        |<-- player.id ----------|
   |<-- Confirmacion -------|                        |
 ```
 
@@ -59,7 +59,6 @@ Jugador                    |                        |
 | Frontend | React 19 + TypeScript + Vite | SPA con hash routing |
 | Estilos | Tailwind CSS (CDN) | Warning en consola, no afecta |
 | Backend | Supabase | PostgreSQL + REST API |
-| Realtime | Supabase Realtime | Configurado, listo para usar |
 | Deploy | Vercel | Auto-deploy desde GitHub |
 | Repo | GitHub | https://github.com/benferk808/futbolmatch |
 
@@ -68,11 +67,21 @@ Jugador                    |                        |
 ## FUNCIONALIDADES IMPLEMENTADAS
 
 ### Crear Partido
+- Nombre del organizador
 - Seleccionar tipo (5, 7, 8, 11 jugadores)
 - Elegir tactica/formacion
 - Colores de equipo personalizables (primario + secundario)
 - Modo Libre o Modo Tecnico
 - Fecha, hora, ubicacion, costo
+- Link de Google Maps (opcional)
+- Nombre del rival/oponente (opcional)
+
+### Sistema de Dos Links
+Al crear partido se muestra un modal con:
+- **Link Organizador:** `#/match/UUID?admin=TOKEN` (privado, guardar)
+- **Link Jugadores:** `#/match/UUID` (compartir en WhatsApp)
+
+El organizador puede recuperar su rol abriendo su link privado.
 
 ### Modo Libre vs Modo Tecnico
 | Accion | Modo Libre | Modo Tecnico |
@@ -81,19 +90,29 @@ Jugador                    |                        |
 | Elegir posicion al unirse | Todos | Solo organizador |
 | Mover jugadores | Todos | Solo organizador |
 | Cambiar tactica | Todos | Solo organizador |
-| Agregar/quitar slots | Todos | Solo organizador |
+| Agregar/quitar suplentes | Todos | Solo organizador |
 
-### Compartir
-- Al crear partido, aparece modal con DOS links:
-  - **Link Organizador:** `#/match/UUID?admin=TOKEN` (privado, guardar)
-  - **Link Jugadores:** `#/match/UUID` (compartir en WhatsApp)
-- Boton "Compartir por WhatsApp" genera mensaje solo con link de jugadores
-- El organizador puede recuperar su rol abriendo su link privado
+### Banco de Suplentes
+- Se pueden agregar espacios para suplentes
+- Los jugadores pendientes se pueden arrastrar al banco
+- Visual: area resaltada cuando se arrastra sobre ella
+
+### Compartir en WhatsApp
+Mensaje formateado con:
+- Link para unirse
+- Datos del partido (fecha, hora, cancha)
+- Rival (si existe)
+- Ubicacion + link Google Maps (si existe)
 
 ### Vista de Jugadores
 - Jugadores en cancha (con posicion asignada)
-- Lista de pendientes/banco (sin posicion)
-- Drag & drop para mover jugadores (solo si tiene permiso)
+- Lista de pendientes (sin posicion)
+- Banco de suplentes
+- Drag & drop para mover jugadores
+
+### Costos
+- Costo total configurable
+- Costo por jugador calculado automaticamente (total / jugadores anotados)
 
 ### Otras
 - Descargar imagen de la formacion (PNG)
@@ -102,11 +121,11 @@ Jugador                    |                        |
 
 ---
 
-## ESTRUCTURA DE ARCHIVOS CLAVE
+## ESTRUCTURA DE ARCHIVOS
 
 ```
 C:\Users\Usuario\Futbolmatch\
-├── App.tsx                    # Router principal (hash-based)
+├── App.tsx                    # Router principal (hash-based + admin auth)
 ├── index.html                 # HTML base + Tailwind CDN
 ├── index.tsx                  # Entry point React
 ├── types.ts                   # Tipos TypeScript
@@ -115,9 +134,10 @@ C:\Users\Usuario\Futbolmatch\
 ├── components/
 │   ├── CreateMatchForm.tsx    # Formulario crear partido
 │   ├── MatchView.tsx          # Vista del partido (principal)
-│   ├── SoccerField.tsx        # Cancha con posiciones
+│   ├── MatchCreatedModal.tsx  # Modal con los dos links
+│   ├── SoccerField.tsx        # Cancha con posiciones + banco
 │   ├── PlayerSlot.tsx         # Slot de jugador
-│   ├── PendingPlayersList.tsx # Lista de jugadores en banco
+│   ├── PendingPlayersList.tsx # Lista de jugadores pendientes
 │   ├── Header.tsx             # Cabecera
 │   └── Modal.tsx              # Modal reutilizable
 │
@@ -129,12 +149,8 @@ C:\Users\Usuario\Futbolmatch\
 ├── lib/
 │   └── supabase.ts            # Cliente Supabase
 │
-├── locales/
-│   ├── es.json                # Traducciones espanol
-│   └── en.json                # Traducciones ingles
-│
 ├── context/
-│   └── LanguageContext.tsx    # Contexto de idioma
+│   └── LanguageContext.tsx    # Traducciones ES/EN (embebidas)
 │
 └── hooks/
     └── useTranslation.ts      # Hook de traduccion
@@ -146,40 +162,44 @@ C:\Users\Usuario\Futbolmatch\
 
 ### Tabla: matches
 ```sql
-id UUID PRIMARY KEY
-created_at TIMESTAMPTZ
-type INTEGER              -- 5, 7, 8, 11
-tactic TEXT               -- "1-3-2-2", etc
-duration_days INTEGER
-date DATE
-time TIME
-field_name TEXT
-location TEXT
-location_url TEXT         -- Link Google Maps
-total_cost DECIMAL
-extra_slots INTEGER
-organizer_name TEXT
-team_color TEXT           -- Color primario
-team_color_secondary TEXT -- Color secundario
-mode TEXT                 -- 'free' o 'coach'
-organizer_id TEXT         -- ID unico del organizador
-custom_positions JSONB    -- Posiciones personalizadas
+CREATE TABLE matches (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at TIMESTAMPTZ DEFAULT now(),
+  type INTEGER NOT NULL,
+  tactic TEXT NOT NULL,
+  duration_days INTEGER DEFAULT 7,
+  date DATE NOT NULL,
+  time TIME NOT NULL,
+  field_name TEXT NOT NULL,
+  location TEXT NOT NULL,
+  location_url TEXT,
+  total_cost DECIMAL NOT NULL,
+  extra_slots INTEGER DEFAULT 0,
+  organizer_name TEXT,
+  opponent TEXT,
+  team_color TEXT,
+  team_color_secondary TEXT,
+  mode TEXT DEFAULT 'free',
+  organizer_id TEXT,
+  custom_positions JSONB DEFAULT '{}'
+);
 ```
 
 ### Tabla: players
 ```sql
-id UUID PRIMARY KEY
-match_id UUID             -- FK a matches
-name TEXT
-position_index INTEGER    -- NULL = pendiente (banco)
-custom_x DECIMAL          -- Posicion X personalizada
-custom_y DECIMAL          -- Posicion Y personalizada
-created_at TIMESTAMPTZ
+CREATE TABLE players (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  match_id UUID REFERENCES matches(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  position_index INTEGER,
+  custom_x DECIMAL,
+  custom_y DECIMAL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
 ```
 
 ### Politicas RLS
 Actualmente: **Permisivas (allow all)** - Para MVP
-Futuro: Restringir por organizador
 
 ---
 
@@ -210,18 +230,17 @@ Mismo contenido que Vercel.
 ## PROBLEMAS CONOCIDOS (no criticos)
 
 1. **Warning Tailwind CDN** - Aparece en consola, no afecta funcionamiento
-2. **Sin autenticacion real** - Cualquiera con el link puede unirse (por diseno, para facilitar acceso)
+2. **Sin autenticacion real** - Cualquiera con el link puede unirse (por diseno)
 
 ---
 
 ## PROXIMAS MEJORAS SUGERIDAS
 
-1. **React Router** - Reemplazar hash routing por path routing real
-2. **Supabase Realtime** - Actualizaciones en vivo (ya configurado, falta implementar)
-3. **Autenticacion** - Login para organizadores
+1. **Supabase Realtime** - Actualizaciones en vivo
+2. **Notificaciones** - Avisar cuando alguien se une
+3. **Historial de partidos** - Ver partidos anteriores
 4. **Tailwind via PostCSS** - Eliminar warning de CDN
-5. **Historial de partidos** - Ver partidos anteriores
-6. **Notificaciones** - Avisar cuando alguien se une
+5. **Tests** - Agregar tests unitarios y e2e
 
 ---
 
