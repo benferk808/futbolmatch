@@ -64,5 +64,14 @@
   "matchCreated": "¡Partido creado exitosamente!",
   "noPermissionToEdit": "Solo el organizador puede modificar posiciones en modo técnico",
   "useJoinButton": "Usa el botón 'Unirse al partido' para anotarte",
+  "matchCreatedTitle": "Partido Creado!",
+  "matchCreatedSubtitle": "Guarda estos links importantes:",
+  "organizerLinkTitle": "Link de ORGANIZADOR",
+  "organizerLinkDescription": "GUARDALO! Te permite editar el partido. No lo compartas.",
+  "playerLinkTitle": "Link para JUGADORES",
+  "playerLinkDescription": "Comparte este link en el grupo de WhatsApp",
+  "linkCopied": "Link copiado!",
+  "sharePlayersLink": "Compartir en WhatsApp",
+  "understood": "Entendido, continuar",
   "footerText": "FUTBOLMATCH © 2024"
 }

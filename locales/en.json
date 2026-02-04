@@ -64,5 +64,14 @@
   "matchCreated": "Match created successfully!",
   "noPermissionToEdit": "Only the organizer can modify positions in coach mode",
   "useJoinButton": "Use the 'Join Match' button to sign up",
+  "matchCreatedTitle": "Match Created!",
+  "matchCreatedSubtitle": "Save these important links:",
+  "organizerLinkTitle": "ORGANIZER Link",
+  "organizerLinkDescription": "SAVE IT! This lets you edit the match. Don't share it.",
+  "playerLinkTitle": "Link for PLAYERS",
+  "playerLinkDescription": "Share this link in the WhatsApp group",
+  "linkCopied": "Link copied!",
+  "sharePlayersLink": "Share on WhatsApp",
+  "understood": "Got it, continue",
   "footerText": "FUTBOLMATCH © 2024"
 }
