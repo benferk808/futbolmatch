@@ -168,6 +168,23 @@ const SoccerField: React.FC<SoccerFieldProps> = ({ match, onSlotClick, onPlayerM
     });
   };
 
+  // Manejar drop en la zona de suplentes
+  const handleDropOnBench = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+
+    // Si hay un jugador pendiente siendo arrastrado, asignarlo al primer slot vacío
+    if (draggedPendingPlayer && onDropPendingPlayer && tacticDetails) {
+      for (let i = 0; i < match.extraSlots; i++) {
+        const extraIndex = tacticDetails.positions.length + i;
+        const player = playersByPosition.get(extraIndex);
+        if (!player) {
+          onDropPendingPlayer(extraIndex);
+          return;
+        }
+      }
+    }
+  };
+
   const renderExtraSlots = () => {
       if (match.extraSlots === 0) return null;
 
@@ -197,12 +214,16 @@ const SoccerField: React.FC<SoccerFieldProps> = ({ match, onSlotClick, onPlayerM
       });
 
       return (
-          <>
-            <h3 className="text-center font-bold mt-4 text-gray-400 border-t border-gray-700 pt-4">{t('extraSlots')}</h3>
+          <div
+            onDrop={handleDropOnBench}
+            onDragOver={handleDragOver}
+            className={`${draggedPendingPlayer ? 'bg-yellow-500 bg-opacity-20 border-2 border-dashed border-yellow-500' : ''}`}
+          >
+            <h3 className="text-center font-bold mt-4 text-gray-400 border-t border-gray-700 pt-4">{t('substituteBench')}</h3>
             <div className="flex flex-wrap justify-center gap-4 p-4">
                 {extraSlotItems}
             </div>
-          </>
+          </div>
       );
   };
 
