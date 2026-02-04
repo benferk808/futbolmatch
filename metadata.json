@@ -1,0 +1,7 @@
+{
+  "name": "FUTBOLMATCH",
+  "description": "An application to easily organize amateur soccer matches. Set up your game, define tactics, and share a unique link for players to join interactively on a virtual field.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
