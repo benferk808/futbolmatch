@@ -41,26 +41,31 @@ export async function createMatch(data: CreateMatchPayload): Promise<{ id: strin
 
   const organizerId = generateId();
 
+  // Construir objeto sin valores undefined (Supabase no los acepta)
+  const insertData: Record<string, unknown> = {
+    type: data.type,
+    tactic: data.tactic,
+    duration_days: data.durationDays,
+    date: data.date,
+    time: data.time,
+    field_name: data.fieldName,
+    location: data.location,
+    total_cost: data.totalCost,
+    extra_slots: data.extraSlots ?? 0,
+    mode: data.mode,
+    organizer_id: organizerId,
+    custom_positions: {},
+  };
+
+  // Solo agregar campos opcionales si tienen valor
+  if (data.locationURL) insertData.location_url = data.locationURL;
+  if (data.organizerName) insertData.organizer_name = data.organizerName;
+  if (data.teamColor) insertData.team_color = data.teamColor;
+  if (data.teamColorSecondary) insertData.team_color_secondary = data.teamColorSecondary;
+
   const { data: match, error } = await supabase
     .from('matches')
-    .insert({
-      type: data.type,
-      tactic: data.tactic,
-      duration_days: data.durationDays,
-      date: data.date,
-      time: data.time,
-      field_name: data.fieldName,
-      location: data.location,
-      location_url: data.locationURL,
-      total_cost: data.totalCost,
-      extra_slots: data.extraSlots || 0,
-      organizer_name: data.organizerName,
-      team_color: data.teamColor,
-      team_color_secondary: data.teamColorSecondary,
-      mode: data.mode,
-      organizer_id: organizerId,
-      custom_positions: {},
-    })
+    .insert(insertData)
     .select('id')
     .single();
 
