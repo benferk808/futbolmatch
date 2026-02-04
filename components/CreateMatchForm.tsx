@@ -25,6 +25,7 @@ const CreateMatchForm: React.FC<CreateMatchFormProps> = ({ onMatchCreated }) => 
   const [location, setLocation] = useState<string>('');
   const [totalCost, setTotalCost] = useState<number | ''>('');
   const [locationURL, setLocationURL] = useState<string>('');
+  const [opponent, setOpponent] = useState<string>('');
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -68,6 +69,7 @@ const CreateMatchForm: React.FC<CreateMatchFormProps> = ({ onMatchCreated }) => 
         totalCost: Number(totalCost),
         extraSlots: 0,
         organizerName: organizerName.trim(),
+        opponent: opponent.trim() || undefined,
         teamColor,
         teamColorSecondary,
         mode,
@@ -91,6 +93,7 @@ const CreateMatchForm: React.FC<CreateMatchFormProps> = ({ onMatchCreated }) => 
         players: [],
         extraSlots: 0,
         organizerName: organizerName.trim(),
+        opponent: opponent.trim() || undefined,
         customPositions: {},
         teamColor,
         teamColorSecondary,
@@ -279,6 +282,11 @@ const CreateMatchForm: React.FC<CreateMatchFormProps> = ({ onMatchCreated }) => 
         <div>
             <label htmlFor="locationURL" className="block text-sm font-medium text-gray-300 mb-1">{t('mapsLink')} ({t('optional')})</label>
             <input type="url" id="locationURL" value={locationURL} onChange={e => setLocationURL(e.target.value)} placeholder="https://maps.google.com/..." className="w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+        </div>
+
+        <div>
+            <label htmlFor="opponent" className="block text-sm font-medium text-gray-300 mb-1">{t('opponent')} ({t('optional')})</label>
+            <input type="text" id="opponent" value={opponent} onChange={e => setOpponent(e.target.value)} placeholder={t('opponentPlaceholder')} className="w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

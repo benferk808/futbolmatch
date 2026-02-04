@@ -62,11 +62,9 @@ const MatchView: React.FC<MatchViewProps> = ({ initialMatch, onMatchUpdate }) =>
 
   const costPerPlayer = useMemo(() => {
     const playerCount = match.players.length;
-    if (playerCount === 0 && totalPositions === 0) return 0;
-    const denominator = Math.max(playerCount, totalPositions);
-    if (denominator === 0) return match.totalCost.toFixed(2);
-    return (match.totalCost / denominator).toFixed(2);
-  }, [match.players.length, match.totalCost, totalPositions]);
+    if (playerCount === 0) return match.totalCost.toFixed(2);
+    return (match.totalCost / playerCount).toFixed(2);
+  }, [match.players.length, match.totalCost]);
   
   const handleSlotClick = async (positionIndex: number, isOccupied: boolean) => {
     if (isOccupied) {
@@ -312,10 +310,16 @@ const MatchView: React.FC<MatchViewProps> = ({ initialMatch, onMatchUpdate }) =>
         })
       : '';
 
+    // Build opponent section if opponent exists
+    const opponentSection = match.opponent
+      ? t('whatsAppOpponentSection', { opponent: match.opponent })
+      : '';
+
     const text = t('whatsAppShareMessage', {
       fieldName: match.fieldName,
       date: match.date,
       time: match.time,
+      opponentSection: opponentSection,
       locationSection: locationSection,
       link: matchLink,
     });

@@ -18,6 +18,7 @@ interface CreateMatchPayload {
   totalCost: number;
   extraSlots?: number;
   organizerName?: string;
+  opponent?: string;
   teamColor?: string;
   teamColorSecondary?: string;
   mode: MatchMode;
@@ -60,6 +61,7 @@ export async function createMatch(data: CreateMatchPayload): Promise<{ id: strin
   // Solo agregar campos opcionales si tienen valor
   if (data.locationURL) insertData.location_url = data.locationURL;
   if (data.organizerName) insertData.organizer_name = data.organizerName;
+  if (data.opponent) insertData.opponent = data.opponent;
   if (data.teamColor) insertData.team_color = data.teamColor;
   if (data.teamColorSecondary) insertData.team_color_secondary = data.teamColorSecondary;
 
@@ -114,6 +116,7 @@ export async function getMatch(matchId: string): Promise<Match> {
     totalCost: parseFloat(matchData.total_cost),
     extraSlots: matchData.extra_slots,
     organizerName: matchData.organizer_name,
+    opponent: matchData.opponent,
     teamColor: matchData.team_color,
     teamColorSecondary: matchData.team_color_secondary,
     mode: matchData.mode as MatchMode,

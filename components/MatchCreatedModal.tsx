@@ -30,10 +30,15 @@ const MatchCreatedModal: React.FC<MatchCreatedModalProps> = ({ match, onClose })
         })
       : '';
 
+    const opponentSection = match.opponent
+      ? t('whatsAppOpponentSection', { opponent: match.opponent })
+      : '';
+
     return t('whatsAppShareMessage', {
       fieldName: match.fieldName,
       date: match.date,
       time: match.time,
+      opponentSection: opponentSection,
       locationSection: locationSection,
       link: playerLink,
     });

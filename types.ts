@@ -29,6 +29,7 @@ export interface Match {
   players: Player[];
   extraSlots: number;
   organizerName?: string;
+  opponent?: string; // Nombre del equipo rival
   customPositions?: Record<number, { x: number; y: number }>; // positionIndex -> {x, y}
   teamColor?: string; // Color principal del equipo (hex)
   teamColorSecondary?: string; // Color secundario del equipo (hex) - para borde/número
