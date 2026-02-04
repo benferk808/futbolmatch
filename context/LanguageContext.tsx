@@ -98,8 +98,8 @@ const en = {
   "matchCreatedSubtitle": "Save these important links:",
   "organizerLinkTitle": "ORGANIZER Link",
   "organizerLinkDescription": "SAVE IT! This lets you edit the match. Don't share it.",
-  "playerLinkTitle": "Link for PLAYERS",
-  "playerLinkDescription": "Share this link in the WhatsApp group",
+  "invitePlayersTitle": "Invite Players",
+  "invitePlayersHint": "Share this message in the group so players can sign up",
   "linkCopied": "Link copied!",
   "sharePlayersLink": "Share on WhatsApp",
   "understood": "Got it, continue"
@@ -202,8 +202,8 @@ const es = {
   "matchCreatedSubtitle": "Guarda estos links importantes:",
   "organizerLinkTitle": "Link de ORGANIZADOR",
   "organizerLinkDescription": "¡GUARDALO! Te permite editar el partido. No lo compartas.",
-  "playerLinkTitle": "Link para JUGADORES",
-  "playerLinkDescription": "Comparte este link en el grupo de WhatsApp",
+  "invitePlayersTitle": "Invitar Jugadores",
+  "invitePlayersHint": "Compartí este mensaje en el grupo para que los jugadores se anoten",
   "linkCopied": "¡Link copiado!",
   "sharePlayersLink": "Compartir en WhatsApp",
   "understood": "Entendido, continuar"
