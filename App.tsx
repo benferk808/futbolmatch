@@ -5,6 +5,7 @@ import CreateMatchForm from './components/CreateMatchForm';
 import MatchView from './components/MatchView';
 import MatchCreatedModal from './components/MatchCreatedModal';
 import Header from './components/Header';
+import InstallPWAPrompt from './components/InstallPWAPrompt';
 import { Toaster } from 'react-hot-toast';
 import { LanguageProvider } from './context/LanguageContext';
 import { useTranslation } from './hooks/useTranslation';
@@ -92,6 +93,7 @@ const AppContent: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
       <Toaster position="top-center" reverseOrder={false} />
+      <InstallPWAPrompt />
       <Header onHomeClick={handleBackToHome} showHomeButton={!!currentMatch} />
       <main className="container mx-auto p-4 md:p-6">
         {currentMatch ? (
