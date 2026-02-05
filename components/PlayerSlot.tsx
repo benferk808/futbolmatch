@@ -15,8 +15,8 @@ interface PlayerSlotProps {
 }
 
 const PlayerSlot: React.FC<PlayerSlotProps> = ({ player, onClick, isExtra = false, role, onDragStart, onDragEnd, isDraggable = false, teamColor = '#667eea', teamColorSecondary }) => {
-  const baseClasses = "relative w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 transform hover:scale-110 shadow-lg border-4";
-  const textClasses = "text-xs md:text-sm font-bold text-center break-words px-1";
+  const baseClasses = "relative w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 transform hover:scale-110";
+  const textClasses = "text-base md:text-lg font-bold text-center break-words px-1 drop-shadow-sm";
 
   // Función para determinar si el texto debe ser blanco o negro según el fondo
   const getTextColor = (hexColor: string) => {
@@ -51,11 +51,14 @@ const PlayerSlot: React.FC<PlayerSlotProps> = ({ player, onClick, isExtra = fals
           onDragStart?.();
         }}
         onDragEnd={onDragEnd}
-        className={`${baseClasses} cursor-move hover:shadow-2xl`}
+        className={`${baseClasses} cursor-move`}
         style={{
           backgroundColor: teamColor,
+          borderWidth: '5px',
+          borderStyle: 'solid',
           borderColor: borderColor,
-          color: textColor
+          color: textColor,
+          boxShadow: `0 4px 15px ${teamColor}80, 0 2px 4px rgba(0,0,0,0.3), inset 0 -2px 4px rgba(0,0,0,0.2)`,
         }}
         title="Arrastra para mover"
       >
@@ -65,17 +68,37 @@ const PlayerSlot: React.FC<PlayerSlotProps> = ({ player, onClick, isExtra = fals
   }
 
   const roleColors = {
-    GK: 'bg-yellow-500/80 border-yellow-300',
-    DF: 'bg-blue-500/80 border-blue-300',
-    MF: 'bg-green-600/80 border-green-400',
-    FW: 'bg-red-500/80 border-red-300',
+    GK: { bg: 'rgba(234, 179, 8, 0.8)', border: '#fde047' },
+    DF: { bg: 'rgba(59, 130, 246, 0.8)', border: '#93c5fd' },
+    MF: { bg: 'rgba(22, 163, 74, 0.8)', border: '#86efac' },
+    FW: { bg: 'rgba(239, 68, 68, 0.8)', border: '#fca5a5' },
   };
 
-  const emptyClasses = isExtra
-    ? "bg-gray-600 border-gray-400 hover:bg-gray-500"
-    : role ? roleColors[role] : "bg-black bg-opacity-30 border-dashed border-gray-300 hover:bg-opacity-50 hover:border-solid";
-
   const cursorClass = isDraggable ? "cursor-move" : "cursor-pointer";
+
+  const emptyStyle = isExtra
+    ? {
+        backgroundColor: 'rgb(75, 85, 99)',
+        borderWidth: '5px',
+        borderStyle: 'solid',
+        borderColor: 'rgb(156, 163, 175)',
+        boxShadow: '0 4px 10px rgba(0,0,0,0.3)',
+      }
+    : role && roleColors[role]
+      ? {
+          backgroundColor: roleColors[role].bg,
+          borderWidth: '5px',
+          borderStyle: 'solid',
+          borderColor: roleColors[role].border,
+          boxShadow: `0 4px 10px rgba(0,0,0,0.3)`,
+        }
+      : {
+          backgroundColor: 'rgba(0, 0, 0, 0.3)',
+          borderWidth: '5px',
+          borderStyle: 'dashed',
+          borderColor: 'rgb(209, 213, 219)',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+        };
 
   return (
     <div
@@ -88,7 +111,8 @@ const PlayerSlot: React.FC<PlayerSlotProps> = ({ player, onClick, isExtra = fals
         }
       }}
       onDragEnd={onDragEnd}
-      className={`${baseClasses} ${emptyClasses} ${cursorClass}`}
+      className={`${baseClasses} ${cursorClass} hover:opacity-90`}
+      style={emptyStyle}
       title={isDraggable ? "Arrastra para mover esta posición" : "Clic para agregar jugador"}
     >
       <span className="text-3xl font-light text-white opacity-80">+</span>

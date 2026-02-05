@@ -335,9 +335,10 @@ const MatchView: React.FC<MatchViewProps> = ({ initialMatch, onMatchUpdate }) =>
     try {
       const canvas = await html2canvas(captureRef.current, {
         backgroundColor: '#1a1a1a',
-        scale: 2,
+        scale: 3,
         logging: false,
         useCORS: true,
+        allowTaint: true,
       });
 
       const image = canvas.toDataURL('image/png');
@@ -546,7 +547,10 @@ const MatchView: React.FC<MatchViewProps> = ({ initialMatch, onMatchUpdate }) =>
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>
-          {t('downloadImage')}
+          <div className="text-left">
+            <div>{t('downloadImage')}</div>
+            <div className="text-xs font-normal opacity-80">{t('downloadImageDescription')}</div>
+          </div>
         </button>
         <button onClick={handleShare} className="py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition-colors">{t('shareOnWhatsApp')}</button>
       </div>

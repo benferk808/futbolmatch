@@ -236,22 +236,41 @@ const SoccerField: React.FC<SoccerFieldProps> = ({ match, onSlotClick, onPlayerM
     return '';
   };
 
+  // Estilos para las franjas de pasto
+  const fieldStyle = {
+    background: `repeating-linear-gradient(
+      to bottom,
+      #2d5a27 0%,
+      #2d5a27 10%,
+      #3d7a37 10%,
+      #3d7a37 20%
+    )`,
+    '--field-line-color': 'rgba(255, 255, 255, 0.85)',
+  } as React.CSSProperties;
+
   return (
-    <div className="bg-green-800 bg-opacity-40 border-4 border-gray-500 rounded-lg overflow-hidden" style={{'--field-line-color': 'rgba(255, 255, 255, 0.2)'} as React.CSSProperties}>
+    <div className="border-4 border-white/30 rounded-lg overflow-hidden shadow-2xl" style={fieldStyle}>
       <div
         ref={fieldRef}
         className="relative aspect-[7/10]"
         onDrop={handleDrop}
         onDragOver={handleDragOver}
       >
-       {/* Field Markings */}
-       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-px bg-[var(--field-line-color)]"></div>
-       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-24 w-24 md:h-32 md:w-32 rounded-full border-2 border-[var(--field-line-color)]"></div>
-       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-2 w-2 rounded-full bg-[var(--field-line-color)]"></div>
+       {/* Field Markings - Línea central */}
+       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-[3px] bg-[var(--field-line-color)]"></div>
+       {/* Círculo central */}
+       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-28 w-28 md:h-36 md:w-36 rounded-full border-[3px] border-[var(--field-line-color)]"></div>
+       {/* Punto central */}
+       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-[var(--field-line-color)]"></div>
 
-       {/* Goal Areas */}
-       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-16 md:h-20 w-1/2 md:w-2/5 border-x-2 border-b-2 border-[var(--field-line-color)] rounded-b-lg"></div>
-       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-16 md:h-20 w-1/2 md:w-2/5 border-x-2 border-t-2 border-[var(--field-line-color)] rounded-t-lg"></div>
+       {/* Goal Areas - Áreas */}
+       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-16 md:h-20 w-1/2 md:w-2/5 border-x-[3px] border-b-[3px] border-[var(--field-line-color)] rounded-b-lg"></div>
+       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-16 md:h-20 w-1/2 md:w-2/5 border-x-[3px] border-t-[3px] border-[var(--field-line-color)] rounded-t-lg"></div>
+
+       {/* Área chica superior */}
+       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-8 md:h-10 w-1/4 md:w-1/5 border-x-[3px] border-b-[3px] border-[var(--field-line-color)] rounded-b-md"></div>
+       {/* Área chica inferior */}
+       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-8 md:h-10 w-1/4 md:w-1/5 border-x-[3px] border-t-[3px] border-[var(--field-line-color)] rounded-t-md"></div>
 
         {renderField()}
 
