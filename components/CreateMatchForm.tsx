@@ -281,7 +281,28 @@ const CreateMatchForm: React.FC<CreateMatchFormProps> = ({ onMatchCreated }) => 
 
         <div>
             <label htmlFor="locationURL" className="block text-sm font-medium text-gray-300 mb-1">{t('mapsLink')} ({t('optional')})</label>
-            <input type="url" id="locationURL" value={locationURL} onChange={e => setLocationURL(e.target.value)} placeholder="https://maps.google.com/..." className="w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+            <div className="flex gap-2">
+              <input type="url" id="locationURL" value={locationURL} onChange={e => setLocationURL(e.target.value)} placeholder="https://maps.google.com/..." className="flex-1 bg-gray-700 border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+              <button
+                type="button"
+                onClick={() => {
+                  const searchQuery = fieldName || location || '';
+                  if (searchQuery.trim()) {
+                    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery.trim())}`, '_blank');
+                  } else {
+                    window.open('https://www.google.com/maps', '_blank');
+                  }
+                }}
+                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-md transition-colors flex items-center gap-2 whitespace-nowrap"
+                title="Buscar en Google Maps"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                </svg>
+                <span className="hidden sm:inline">Buscar en Maps</span>
+              </button>
+            </div>
+            <p className="text-xs text-gray-400 mt-1">Buscá la cancha en Maps, copiá el link y pegalo acá</p>
         </div>
 
         <div>
