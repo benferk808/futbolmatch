@@ -143,7 +143,7 @@ const SoccerField: React.FC<SoccerFieldProps> = ({ match, onSlotClick, onPlayerM
         return (
             <div
                 key={`pos-${index}`}
-                className="absolute"
+                className="absolute z-10"
                 style={{ top: `${yPos}%`, left: `${xPos}%`, transform: 'translate(-50%, -50%)' }}
             >
                 <PlayerSlot
@@ -236,41 +236,51 @@ const SoccerField: React.FC<SoccerFieldProps> = ({ match, onSlotClick, onPlayerM
     return '';
   };
 
-  // Estilos para las franjas de pasto
-  const fieldStyle = {
-    background: `repeating-linear-gradient(
-      to bottom,
-      #2d5a27 0%,
-      #2d5a27 10%,
-      #3d7a37 10%,
-      #3d7a37 20%
-    )`,
-    '--field-line-color': 'rgba(255, 255, 255, 0.85)',
-  } as React.CSSProperties;
+  // Colores para la cancha
+  const grassDark = '#2d5a27';
+  const grassLight = '#3d7a37';
+  const lineColor = 'rgba(255, 255, 255, 0.9)';
+
+  // Generar franjas de pasto (10 franjas)
+  const grassStripes = Array.from({ length: 10 }, (_, i) => (
+    <div
+      key={`grass-${i}`}
+      className="absolute w-full"
+      style={{
+        top: `${i * 10}%`,
+        height: '10%',
+        backgroundColor: i % 2 === 0 ? grassDark : grassLight,
+      }}
+    />
+  ));
 
   return (
-    <div className="border-4 border-white/30 rounded-lg overflow-hidden shadow-2xl" style={fieldStyle}>
+    <div className="border-4 rounded-lg overflow-hidden shadow-2xl" style={{ borderColor: 'rgba(255,255,255,0.3)' }}>
       <div
         ref={fieldRef}
         className="relative aspect-[7/10]"
+        style={{ backgroundColor: grassDark }}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
       >
+       {/* Franjas de pasto */}
+       {grassStripes}
+
        {/* Field Markings - Línea central */}
-       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-[3px] bg-[var(--field-line-color)]"></div>
+       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-[3px] z-[1]" style={{ backgroundColor: lineColor }}></div>
        {/* Círculo central */}
-       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-28 w-28 md:h-36 md:w-36 rounded-full border-[3px] border-[var(--field-line-color)]"></div>
+       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-28 w-28 md:h-36 md:w-36 rounded-full z-[1]" style={{ border: `3px solid ${lineColor}` }}></div>
        {/* Punto central */}
-       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-[var(--field-line-color)]"></div>
+       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-3 w-3 rounded-full z-[1]" style={{ backgroundColor: lineColor }}></div>
 
        {/* Goal Areas - Áreas */}
-       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-16 md:h-20 w-1/2 md:w-2/5 border-x-[3px] border-b-[3px] border-[var(--field-line-color)] rounded-b-lg"></div>
-       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-16 md:h-20 w-1/2 md:w-2/5 border-x-[3px] border-t-[3px] border-[var(--field-line-color)] rounded-t-lg"></div>
+       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-16 md:h-20 w-1/2 md:w-2/5 rounded-b-lg z-[1]" style={{ borderLeft: `3px solid ${lineColor}`, borderRight: `3px solid ${lineColor}`, borderBottom: `3px solid ${lineColor}` }}></div>
+       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-16 md:h-20 w-1/2 md:w-2/5 rounded-t-lg z-[1]" style={{ borderLeft: `3px solid ${lineColor}`, borderRight: `3px solid ${lineColor}`, borderTop: `3px solid ${lineColor}` }}></div>
 
        {/* Área chica superior */}
-       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-8 md:h-10 w-1/4 md:w-1/5 border-x-[3px] border-b-[3px] border-[var(--field-line-color)] rounded-b-md"></div>
+       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-8 md:h-10 w-1/4 md:w-1/5 rounded-b-md z-[1]" style={{ borderLeft: `3px solid ${lineColor}`, borderRight: `3px solid ${lineColor}`, borderBottom: `3px solid ${lineColor}` }}></div>
        {/* Área chica inferior */}
-       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-8 md:h-10 w-1/4 md:w-1/5 border-x-[3px] border-t-[3px] border-[var(--field-line-color)] rounded-t-md"></div>
+       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-8 md:h-10 w-1/4 md:w-1/5 rounded-t-md z-[1]" style={{ borderLeft: `3px solid ${lineColor}`, borderRight: `3px solid ${lineColor}`, borderTop: `3px solid ${lineColor}` }}></div>
 
         {renderField()}
 
