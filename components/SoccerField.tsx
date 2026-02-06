@@ -267,20 +267,68 @@ const SoccerField: React.FC<SoccerFieldProps> = ({ match, onSlotClick, onPlayerM
        {grassStripes}
 
        {/* Field Markings - Línea central */}
-       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-[3px] z-[1]" style={{ backgroundColor: lineColor }}></div>
+       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-[5px] z-[1]" style={{ backgroundColor: lineColor }}></div>
        {/* Círculo central */}
-       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-28 w-28 md:h-36 md:w-36 rounded-full z-[1]" style={{ border: `3px solid ${lineColor}` }}></div>
+       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-44 w-44 md:h-60 md:w-60 rounded-full z-[1]" style={{ border: `5px solid ${lineColor}` }}></div>
        {/* Punto central */}
-       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-3 w-3 rounded-full z-[1]" style={{ backgroundColor: lineColor }}></div>
+       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-5 w-5 md:h-7 md:w-7 rounded-full z-[1]" style={{ backgroundColor: lineColor }}></div>
 
-       {/* Goal Areas - Áreas */}
-       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-16 md:h-20 w-1/2 md:w-2/5 rounded-b-lg z-[1]" style={{ borderLeft: `3px solid ${lineColor}`, borderRight: `3px solid ${lineColor}`, borderBottom: `3px solid ${lineColor}` }}></div>
-       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-16 md:h-20 w-1/2 md:w-2/5 rounded-t-lg z-[1]" style={{ borderLeft: `3px solid ${lineColor}`, borderRight: `3px solid ${lineColor}`, borderTop: `3px solid ${lineColor}` }}></div>
+       {/* Goal Areas - Áreas grandes */}
+       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-24 md:h-36 w-3/5 md:w-1/2 rounded-b-lg z-[1]" style={{ borderLeft: `5px solid ${lineColor}`, borderRight: `5px solid ${lineColor}`, borderBottom: `5px solid ${lineColor}` }}></div>
+       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-24 md:h-36 w-3/5 md:w-1/2 rounded-t-lg z-[1]" style={{ borderLeft: `5px solid ${lineColor}`, borderRight: `5px solid ${lineColor}`, borderTop: `5px solid ${lineColor}` }}></div>
 
        {/* Área chica superior */}
-       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-8 md:h-10 w-1/4 md:w-1/5 rounded-b-md z-[1]" style={{ borderLeft: `3px solid ${lineColor}`, borderRight: `3px solid ${lineColor}`, borderBottom: `3px solid ${lineColor}` }}></div>
+       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-12 md:h-18 w-2/5 md:w-1/3 rounded-b-md z-[1]" style={{ borderLeft: `5px solid ${lineColor}`, borderRight: `5px solid ${lineColor}`, borderBottom: `5px solid ${lineColor}` }}></div>
        {/* Área chica inferior */}
-       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-8 md:h-10 w-1/4 md:w-1/5 rounded-t-md z-[1]" style={{ borderLeft: `3px solid ${lineColor}`, borderRight: `3px solid ${lineColor}`, borderTop: `3px solid ${lineColor}` }}></div>
+       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-12 md:h-18 w-2/5 md:w-1/3 rounded-t-md z-[1]" style={{ borderLeft: `5px solid ${lineColor}`, borderRight: `5px solid ${lineColor}`, borderTop: `5px solid ${lineColor}` }}></div>
+
+       {/* Arco superior */}
+       <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-32 md:w-44 h-6 md:h-9 z-[2]" style={{
+         backgroundColor: '#ffffff',
+         borderRadius: '0 0 8px 8px',
+         boxShadow: '0 4px 8px rgba(0,0,0,0.3), inset 0 -2px 4px rgba(0,0,0,0.2)'
+       }}>
+         {/* Red del arco */}
+         <div className="absolute inset-0 opacity-30" style={{
+           backgroundImage: 'repeating-linear-gradient(90deg, #666 0px, #666 1px, transparent 1px, transparent 6px), repeating-linear-gradient(0deg, #666 0px, #666 1px, transparent 1px, transparent 6px)',
+           borderRadius: '0 0 8px 8px'
+         }}></div>
+       </div>
+
+       {/* Arco inferior */}
+       <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-32 md:w-44 h-6 md:h-9 z-[2]" style={{
+         backgroundColor: '#ffffff',
+         borderRadius: '8px 8px 0 0',
+         boxShadow: '0 -4px 8px rgba(0,0,0,0.3), inset 0 2px 4px rgba(0,0,0,0.2)'
+       }}>
+         {/* Red del arco */}
+         <div className="absolute inset-0 opacity-30" style={{
+           backgroundImage: 'repeating-linear-gradient(90deg, #666 0px, #666 1px, transparent 1px, transparent 6px), repeating-linear-gradient(0deg, #666 0px, #666 1px, transparent 1px, transparent 6px)',
+           borderRadius: '8px 8px 0 0'
+         }}></div>
+       </div>
+
+       {/* Banderines de córner */}
+       {/* Esquina superior izquierda */}
+       <div className="absolute top-2 left-2 z-[2]">
+         <div className="w-2 h-8 md:h-10 bg-yellow-400 rounded-sm" style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.4)' }}></div>
+         <div className="absolute -top-4 -left-2 w-5 h-4 bg-red-500" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 50%)', boxShadow: '0 2px 3px rgba(0,0,0,0.3)' }}></div>
+       </div>
+       {/* Esquina superior derecha */}
+       <div className="absolute top-2 right-2 z-[2]">
+         <div className="w-2 h-8 md:h-10 bg-yellow-400 rounded-sm" style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.4)' }}></div>
+         <div className="absolute -top-4 -right-2 w-5 h-4 bg-red-500" style={{ clipPath: 'polygon(0 0, 0 100%, 100% 50%)', boxShadow: '0 2px 3px rgba(0,0,0,0.3)' }}></div>
+       </div>
+       {/* Esquina inferior izquierda */}
+       <div className="absolute bottom-2 left-2 z-[2]">
+         <div className="w-2 h-8 md:h-10 bg-yellow-400 rounded-sm" style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.4)' }}></div>
+         <div className="absolute -bottom-4 -left-2 w-5 h-4 bg-red-500" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 50%)', boxShadow: '0 2px 3px rgba(0,0,0,0.3)' }}></div>
+       </div>
+       {/* Esquina inferior derecha */}
+       <div className="absolute bottom-2 right-2 z-[2]">
+         <div className="w-2 h-8 md:h-10 bg-yellow-400 rounded-sm" style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.4)' }}></div>
+         <div className="absolute -bottom-4 -right-2 w-5 h-4 bg-red-500" style={{ clipPath: 'polygon(0 0, 0 100%, 100% 50%)', boxShadow: '0 2px 3px rgba(0,0,0,0.3)' }}></div>
+       </div>
 
         {renderField()}
 

@@ -333,15 +333,25 @@ const MatchView: React.FC<MatchViewProps> = ({ initialMatch, onMatchUpdate }) =>
     const loadingToast = toast.loading(t('generatingImage') || 'Generando imagen...');
 
     try {
+      // Esperar un momento para que el DOM esté estable
+      await new Promise(resolve => setTimeout(resolve, 100));
+
       const canvas = await html2canvas(captureRef.current, {
         backgroundColor: '#1a1a1a',
-        scale: 3,
+        scale: 2,
         logging: false,
         useCORS: true,
         allowTaint: true,
+        imageTimeout: 15000,
+        removeContainer: true,
       });
 
-      const image = canvas.toDataURL('image/png');
+      // Verificar que el canvas tenga contenido
+      if (canvas.width === 0 || canvas.height === 0) {
+        throw new Error('Canvas vacío');
+      }
+
+      const image = canvas.toDataURL('image/png', 0.95);
       const link = document.createElement('a');
       link.href = image;
       link.download = `futbolmatch-${match.fieldName.replace(/\s+/g, '-')}-${match.date}.png`;

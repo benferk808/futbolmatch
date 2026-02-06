@@ -14,33 +14,105 @@ interface PlayerSlotProps {
   teamColorSecondary?: string;
 }
 
+// Componente SVG de camiseta
+const JerseyIcon: React.FC<{ fillColor: string; strokeColor: string }> = ({ fillColor, strokeColor }) => (
+  <svg
+    viewBox="0 0 100 100"
+    className="w-full h-full"
+    style={{ filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.4))' }}
+  >
+    {/* Camiseta principal */}
+    <path
+      d="M20 25 L35 20 L40 30 L45 25 L55 25 L60 30 L65 20 L80 25 L85 45 L75 50 L75 85 L25 85 L25 50 L15 45 Z"
+      fill={fillColor}
+      stroke={strokeColor}
+      strokeWidth="3"
+    />
+    {/* Cuello */}
+    <path
+      d="M45 25 Q50 32 55 25"
+      fill="none"
+      stroke={strokeColor}
+      strokeWidth="2"
+    />
+    {/* Línea decorativa en mangas */}
+    <path
+      d="M25 35 L35 32"
+      stroke={strokeColor}
+      strokeWidth="2"
+      opacity="0.6"
+    />
+    <path
+      d="M75 35 L65 32"
+      stroke={strokeColor}
+      strokeWidth="2"
+      opacity="0.6"
+    />
+  </svg>
+);
+
+// Componente SVG de camiseta vacía (para posiciones sin jugador)
+const EmptyJerseyIcon: React.FC<{ fillColor: string; strokeColor: string; isDashed?: boolean }> = ({ fillColor, strokeColor, isDashed = false }) => (
+  <svg
+    viewBox="0 0 100 100"
+    className="w-full h-full"
+    style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}
+  >
+    {/* Camiseta principal */}
+    <path
+      d="M20 25 L35 20 L40 30 L45 25 L55 25 L60 30 L65 20 L80 25 L85 45 L75 50 L75 85 L25 85 L25 50 L15 45 Z"
+      fill={fillColor}
+      stroke={strokeColor}
+      strokeWidth="3"
+      strokeDasharray={isDashed ? "5,5" : "none"}
+    />
+    {/* Signo + en el centro */}
+    <text
+      x="50"
+      y="62"
+      textAnchor="middle"
+      fontSize="30"
+      fill="white"
+      opacity="0.8"
+      fontWeight="300"
+    >
+      +
+    </text>
+  </svg>
+);
+
 const PlayerSlot: React.FC<PlayerSlotProps> = ({ player, onClick, isExtra = false, role, onDragStart, onDragEnd, isDraggable = false, teamColor = '#667eea', teamColorSecondary }) => {
-  const baseClasses = "relative w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 transform hover:scale-110";
-  const textClasses = "text-base md:text-lg font-bold text-center break-words px-1 drop-shadow-sm";
+  const baseClasses = "relative w-28 h-32 md:w-40 md:h-48 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 transform hover:scale-105";
 
   // Función para determinar si el texto debe ser blanco o negro según el fondo
   const getTextColor = (hexColor: string) => {
-    const r = parseInt(hexColor.slice(1, 3), 16);
-    const g = parseInt(hexColor.slice(3, 5), 16);
-    const b = parseInt(hexColor.slice(5, 7), 16);
-    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-    return brightness > 128 ? '#000000' : '#FFFFFF';
+    try {
+      const r = parseInt(hexColor.slice(1, 3), 16);
+      const g = parseInt(hexColor.slice(3, 5), 16);
+      const b = parseInt(hexColor.slice(5, 7), 16);
+      const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+      return brightness > 128 ? '#000000' : '#FFFFFF';
+    } catch {
+      return '#FFFFFF';
+    }
   };
 
-  // Función para hacer el color un poco más claro para el borde (fallback si no hay color secundario)
+  // Función para hacer el color un poco más claro para el borde
   const getBorderColor = (hexColor: string) => {
-    const r = parseInt(hexColor.slice(1, 3), 16);
-    const g = parseInt(hexColor.slice(3, 5), 16);
-    const b = parseInt(hexColor.slice(5, 7), 16);
-    const lighten = (c: number) => Math.min(255, c + 40);
-    return `rgb(${lighten(r)}, ${lighten(g)}, ${lighten(b)})`;
+    try {
+      const r = parseInt(hexColor.slice(1, 3), 16);
+      const g = parseInt(hexColor.slice(3, 5), 16);
+      const b = parseInt(hexColor.slice(5, 7), 16);
+      const lighten = (c: number) => Math.min(255, c + 60);
+      return `rgb(${lighten(r)}, ${lighten(g)}, ${lighten(b)})`;
+    } catch {
+      return '#FFFFFF';
+    }
   };
 
   if (player) {
-    // Usar color secundario si existe, sino calcular automáticamente
-    const borderColor = teamColorSecondary || getBorderColor(teamColor);
-    // El texto usa el color secundario si existe, sino calcula según brillo del fondo
-    const textColor = teamColorSecondary || getTextColor(teamColor);
+    const strokeColor = teamColorSecondary || getBorderColor(teamColor);
+    const textColor = getTextColor(teamColor);
 
     return (
       <div
@@ -52,17 +124,32 @@ const PlayerSlot: React.FC<PlayerSlotProps> = ({ player, onClick, isExtra = fals
         }}
         onDragEnd={onDragEnd}
         className={`${baseClasses} cursor-move`}
-        style={{
-          backgroundColor: teamColor,
-          borderWidth: '5px',
-          borderStyle: 'solid',
-          borderColor: borderColor,
-          color: textColor,
-          boxShadow: `0 4px 15px ${teamColor}80, 0 2px 4px rgba(0,0,0,0.3), inset 0 -2px 4px rgba(0,0,0,0.2)`,
-        }}
         title="Arrastra para mover"
       >
-        <span className={textClasses}>{player.name}</span>
+        {/* Sombra proyectada sobre el pasto */}
+        <div
+          className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-20 h-4 md:w-28 md:h-6 rounded-full opacity-30"
+          style={{ backgroundColor: '#000', filter: 'blur(4px)' }}
+        />
+
+        {/* Camiseta */}
+        <div className="relative w-24 h-28 md:w-36 md:h-44">
+          <JerseyIcon fillColor={teamColor} strokeColor={strokeColor} />
+          {/* Nombre del jugador sobre la camiseta */}
+          <div
+            className="absolute inset-0 flex items-center justify-center pt-2 md:pt-3"
+            style={{ color: textColor }}
+          >
+            <span className="text-base md:text-lg font-bold text-center leading-tight px-1 drop-shadow-md" style={{
+              textShadow: textColor === '#FFFFFF' ? '0 1px 3px rgba(0,0,0,0.9)' : '0 1px 3px rgba(255,255,255,0.6)',
+              maxWidth: '90%',
+              overflow: 'hidden',
+              wordBreak: 'break-word'
+            }}>
+              {player.name}
+            </span>
+          </div>
+        </div>
       </div>
     );
   }
@@ -76,29 +163,17 @@ const PlayerSlot: React.FC<PlayerSlotProps> = ({ player, onClick, isExtra = fals
 
   const cursorClass = isDraggable ? "cursor-move" : "cursor-pointer";
 
-  const emptyStyle = isExtra
-    ? {
-        backgroundColor: 'rgb(75, 85, 99)',
-        borderWidth: '5px',
-        borderStyle: 'solid',
-        borderColor: 'rgb(156, 163, 175)',
-        boxShadow: '0 4px 10px rgba(0,0,0,0.3)',
-      }
-    : role && roleColors[role]
-      ? {
-          backgroundColor: roleColors[role].bg,
-          borderWidth: '5px',
-          borderStyle: 'solid',
-          borderColor: roleColors[role].border,
-          boxShadow: `0 4px 10px rgba(0,0,0,0.3)`,
-        }
-      : {
-          backgroundColor: 'rgba(0, 0, 0, 0.3)',
-          borderWidth: '5px',
-          borderStyle: 'dashed',
-          borderColor: 'rgb(209, 213, 219)',
-          boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
-        };
+  const getEmptyColors = () => {
+    if (isExtra) {
+      return { bg: 'rgb(75, 85, 99)', border: 'rgb(156, 163, 175)', isDashed: false };
+    }
+    if (role && roleColors[role]) {
+      return { bg: roleColors[role].bg, border: roleColors[role].border, isDashed: false };
+    }
+    return { bg: 'rgba(0, 0, 0, 0.4)', border: 'rgb(209, 213, 219)', isDashed: true };
+  };
+
+  const emptyColors = getEmptyColors();
 
   return (
     <div
@@ -112,10 +187,15 @@ const PlayerSlot: React.FC<PlayerSlotProps> = ({ player, onClick, isExtra = fals
       }}
       onDragEnd={onDragEnd}
       className={`${baseClasses} ${cursorClass} hover:opacity-90`}
-      style={emptyStyle}
       title={isDraggable ? "Arrastra para mover esta posición" : "Clic para agregar jugador"}
     >
-      <span className="text-3xl font-light text-white opacity-80">+</span>
+      <div className="relative w-24 h-28 md:w-36 md:h-44">
+        <EmptyJerseyIcon
+          fillColor={emptyColors.bg}
+          strokeColor={emptyColors.border}
+          isDashed={emptyColors.isDashed}
+        />
+      </div>
     </div>
   );
 };
