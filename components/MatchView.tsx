@@ -573,12 +573,13 @@ const MatchView: React.FC<MatchViewProps> = ({ initialMatch, onMatchUpdate }) =>
             type="text"
             value={newPlayerName}
             onChange={e => setNewPlayerName(e.target.value)}
-            maxLength={15}
+            maxLength={10}
             placeholder={t('yourNamePlaceholder')}
             className="w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-white p-2"
             autoFocus
             onKeyPress={(e) => e.key === 'Enter' && handleJoinMatch()}
           />
+          <p className="text-xs text-gray-400 mt-1">Máximo 10 caracteres</p>
           <div className="mt-6 flex justify-end gap-3">
             <button onClick={() => setJoinModalOpen(false)} className="px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded-md text-white">{t('cancel')}</button>
             <button onClick={handleJoinMatch} className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-md text-white font-semibold">{t('confirm')}</button>

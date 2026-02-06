@@ -137,16 +137,15 @@ const PlayerSlot: React.FC<PlayerSlotProps> = ({ player, onClick, isExtra = fals
           <JerseyIcon fillColor={teamColor} strokeColor={strokeColor} />
           {/* Nombre del jugador sobre la camiseta */}
           <div
-            className="absolute inset-0 flex items-center justify-center pt-2 md:pt-3"
+            className="absolute inset-0 flex items-center justify-center"
             style={{ color: textColor }}
           >
-            <span className="text-base md:text-lg font-bold text-center leading-tight px-1 drop-shadow-md" style={{
+            <span className="text-sm md:text-base font-bold text-center leading-tight px-1" style={{
               textShadow: textColor === '#FFFFFF' ? '0 1px 3px rgba(0,0,0,0.9)' : '0 1px 3px rgba(255,255,255,0.6)',
-              maxWidth: '90%',
-              overflow: 'hidden',
-              wordBreak: 'break-word'
+              maxWidth: '85%',
+              lineHeight: '1.1',
             }}>
-              {player.name}
+              {player.name.length > 10 ? player.name.substring(0, 10) : player.name}
             </span>
           </div>
         </div>
