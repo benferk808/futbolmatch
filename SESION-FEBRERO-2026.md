@@ -53,6 +53,16 @@ Sesión enfocada en mejoras visuales significativas para hacer la app más atrac
 - Texto "Máximo 10 caracteres" debajo del input
 - Fix del corte de texto en descarga de imagen (removido overflow:hidden)
 
+### 7. Botón "Buscar en Maps"
+**Archivo:** `components/CreateMatchForm.tsx`
+
+- Botón verde junto al campo de link de Google Maps
+- Abre Google Maps con el nombre de la cancha como búsqueda
+- Fallback a ubicación si no hay nombre de cancha
+- Ícono de ubicación + texto en desktop, solo ícono en móvil
+- Texto de ayuda: "Buscá la cancha en Maps, copiá el link y pegalo acá"
+- Mejora significativa en UX para agregar ubicación
+
 ---
 
 ## Tamaños Finales de Elementos
@@ -87,6 +97,8 @@ Sesión enfocada en mejoras visuales significativas para hacer la app más atrac
 4. `bf31615` - Add session documentation for February 2026 visual upgrades
 5. `e20479b` - Fix player name display: limit to 10 chars, fix clipping
 6. `14eccfb` - Force 10 char limit on mobile browsers + add counter
+7. `1d18cca` - Update session docs with name limit fixes and mobile lessons
+8. `6e64f02` - Add 'Search in Maps' button for easy location lookup
 
 ---
 
