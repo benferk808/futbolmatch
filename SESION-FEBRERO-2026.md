@@ -44,6 +44,15 @@ Sesión enfocada en mejoras visuales significativas para hacer la app más atrac
 - Jugadores (z-10) por encima de líneas de cancha (z-1)
 - Los nombres no se tapan con las líneas blancas
 
+### 6. Límite de Caracteres en Nombres
+**Archivos:** `components/PlayerSlot.tsx`, `components/MatchView.tsx`
+
+- Nombres limitados a máximo 10 caracteres
+- Input usa `.slice(0, 10)` en onChange (funciona en todos los navegadores, incluso móviles)
+- Contador de caracteres visible `(X/10)`
+- Texto "Máximo 10 caracteres" debajo del input
+- Fix del corte de texto en descarga de imagen (removido overflow:hidden)
+
 ---
 
 ## Tamaños Finales de Elementos
@@ -75,6 +84,9 @@ Sesión enfocada en mejoras visuales significativas para hacer la app más atrac
 1. `7169430` - Improve visual design: field, players and download
 2. `864eab4` - Fix field rendering for image download
 3. `b61a40e` - Major visual upgrade: jerseys, goals, corner flags
+4. `bf31615` - Add session documentation for February 2026 visual upgrades
+5. `e20479b` - Fix player name display: limit to 10 chars, fix clipping
+6. `14eccfb` - Force 10 char limit on mobile browsers + add counter
 
 ---
 
@@ -99,6 +111,11 @@ Sesión enfocada en mejoras visuales significativas para hacer la app más atrac
 ### Responsive
 - Todos los elementos usan clases `md:` para desktop
 - Mobile-first approach
+
+### Input en móviles
+- `maxLength` NO funciona bien en algunos navegadores móviles
+- Solución: usar `.slice(0, N)` en el `onChange` para forzar el límite
+- Siempre agregar contador de caracteres para feedback visual
 
 ---
 
